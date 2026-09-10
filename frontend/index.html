@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Security Portal - College Project</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-wrapper">
+        <!-- Navigation Header -->
+        <header class="navbar">
+            <div class="nav-brand">
+                <div class="brand-icon">🛡️</div>
+                <div>
+                    <h1 class="brand-title">Application Security Portal</h1>
+                    <p class="brand-subtitle">College Demonstration: Auth, Validation & Security Architecture</p>
+                </div>
+            </div>
+            <div id="nav-user-controls" class="nav-controls hidden">
+                <span id="nav-user-badge" class="role-badge">User</span>
+                <span id="nav-user-email" class="user-email-text">user@example.com</span>
+                <button id="logout-btn" class="btn btn-outline-danger" type="button">Logout</button>
+            </div>
+        </header>
+
+        <!-- Global Alert Banner -->
+        <div id="alert-container" class="alert-container">
+            <div id="alert-box" class="alert-box hidden" role="alert">
+                <span id="alert-icon" class="alert-icon">ℹ️</span>
+                <span id="alert-message" class="alert-message">Alert message</span>
+                <button id="alert-close" class="alert-close-btn" type="button" aria-label="Close">&times;</button>
+            </div>
+        </div>
+
+        <!-- Main Content Container -->
+        <main class="main-content">
+            
+            <!-- ================= AUTH VIEW (Login / Register) ================= -->
+            <section id="auth-view" class="auth-section">
+                <div class="auth-card">
+                    <!-- Auth Switcher Tabs -->
+                    <div class="tab-header">
+                        <button id="tab-login" class="tab-btn active" type="button">Login</button>
+                        <button id="tab-register" class="tab-btn" type="button">Register</button>
+                    </div>
+
+                    <!-- Demo Quick Fill Box (For evaluators) -->
+                    <div class="demo-account-box">
+                        <div class="demo-box-header">
+                            <span class="demo-title">⚡ Quick Demo Login:</span>
+                        </div>
+                        <div class="demo-buttons">
+                            <button id="fill-admin-btn" type="button" class="btn btn-sm btn-demo">
+                                👑 Admin Demo (Admin@123)
+                            </button>
+                            <button id="fill-user-btn" type="button" class="btn btn-sm btn-demo">
+                                👤 User Demo (User@123)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- LOGIN FORM -->
+                    <form id="login-form" class="auth-form" novalidate>
+                        <h2 class="form-title">Account Login</h2>
+                        <p class="form-description">Enter your credentials to access the secure dashboard.</p>
+
+                        <div class="form-group">
+                            <label for="login-email">Email Address</label>
+                            <input 
+                                type="email" 
+                                id="login-email" 
+                                class="form-control" 
+                                placeholder="name@example.com" 
+                                required 
+                                autocomplete="email"
+                            >
+                            <div id="login-email-error" class="field-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="login-password">Password</label>
+                            <input 
+                                type="password" 
+                                id="login-password" 
+                                class="form-control" 
+                                placeholder="Enter password" 
+                                required 
+                                autocomplete="current-password"
+                            >
+                            <div id="login-password-error" class="field-error"></div>
+                        </div>
+
+                        <button id="login-submit-btn" type="submit" class="btn btn-primary btn-block">
+                            Sign In
+                        </button>
+
+                        <div class="form-footer">
+                            <span>Don't have an account?</span>
+                            <a href="#" id="switch-to-register" class="link-btn">Register here</a>
+                        </div>
+                    </form>
+
+                    <!-- REGISTER FORM -->
+                    <form id="register-form" class="auth-form hidden" novalidate>
+                        <h2 class="form-title">Create an Account</h2>
+                        <p class="form-description">Register with strong password and input validation.</p>
+
+                        <div class="form-group">
+                            <label for="register-name">Full Name <span class="required">*</span></label>
+                            <input 
+                                type="text" 
+                                id="register-name" 
+                                class="form-control" 
+                                placeholder="e.g. Alex Hunter" 
+                                required 
+                                autocomplete="name"
+                            >
+                            <div id="register-name-error" class="field-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="register-email">Email Address <span class="required">*</span></label>
+                            <input 
+                                type="email" 
+                                id="register-email" 
+                                class="form-control" 
+                                placeholder="e.g. alex@example.com" 
+                                required 
+                                autocomplete="email"
+                            >
+                            <div id="register-email-error" class="field-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="register-password">Password <span class="required">*</span></label>
+                            <input 
+                                type="password" 
+                                id="register-password" 
+                                class="form-control" 
+                                placeholder="Minimum 8 characters" 
+                                required 
+                                autocomplete="new-password"
+                            >
+                            <div class="input-hint">Must contain at least 8 characters.</div>
+                            <div id="register-password-error" class="field-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="register-confirm-password">Confirm Password <span class="required">*</span></label>
+                            <input 
+                                type="password" 
+                                id="register-confirm-password" 
+                                class="form-control" 
+                                placeholder="Re-enter your password" 
+                                required 
+                                autocomplete="new-password"
+                            >
+                            <div id="register-confirm-error" class="field-error"></div>
+                        </div>
+
+                        <button id="register-submit-btn" type="submit" class="btn btn-success btn-block">
+                            Complete Registration
+                        </button>
+
+                        <div class="form-footer">
+                            <span>Already registered?</span>
+                            <a href="#" id="switch-to-login" class="link-btn">Login here</a>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- ================= DASHBOARD VIEW ================= -->
+            <section id="dashboard-view" class="dashboard-section hidden">
+                <!-- Welcome Banner -->
+                <div class="welcome-card">
+                    <div class="welcome-info">
+                        <h2 id="dashboard-welcome-msg" class="welcome-title">Welcome to the Secure Portal</h2>
+                        <p class="welcome-subtitle">
+                            Logged in as: <strong id="user-email-display">user@example.com</strong> | 
+                            Role: <span id="user-role-badge" class="role-badge">user</span>
+                        </p>
+                    </div>
+                    <div class="welcome-meta">
+                        <span class="session-badge">🔒 Session Active (JWT Bearer)</span>
+                    </div>
+                </div>
+
+                <!-- Security Status Cards Grid -->
+                <div class="section-title-wrap">
+                    <h3 class="section-heading">Application Security Status Checks</h3>
+                    <p class="section-subheading">Live verification status of core defensive security mechanisms.</p>
+                </div>
+
+                <div class="status-grid">
+                    <!-- Card 1: Authentication -->
+                    <div class="status-card">
+                        <div class="card-icon icon-auth">🔑</div>
+                        <div class="card-content">
+                            <h4 class="card-title">Authentication Status</h4>
+                            <p id="status-auth-desc" class="card-desc">Authenticated via JSON Web Token (JWT)</p>
+                            <span class="status-pill pill-success">✓ Verified Active</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Password Hashing -->
+                    <div class="status-card">
+                        <div class="card-icon icon-hash">🔒</div>
+                        <div class="card-content">
+                            <h4 class="card-title">Password Hashing</h4>
+                            <p id="status-hash-desc" class="card-desc">Bcrypt (10 Salt Rounds) Enforced</p>
+                            <span class="status-pill pill-success">✓ One-Way Hash Active</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Input Validation -->
+                    <div class="status-card">
+                        <div class="card-icon icon-validate">🛡️</div>
+                        <div class="card-content">
+                            <h4 class="card-title">Input Validation</h4>
+                            <p id="status-validation-desc" class="card-desc">Client & Server-side Validation Active</p>
+                            <span class="status-pill pill-success">✓ Enforced</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Authorization -->
+                    <div class="status-card">
+                        <div class="card-icon icon-authz">⚖️</div>
+                        <div class="card-content">
+                            <h4 class="card-title">Authorization Status</h4>
+                            <p id="status-authz-desc" class="card-desc">Role-Based Access Control</p>
+                            <span id="status-authz-pill" class="status-pill pill-info">Protected Access</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= ADMIN DASHBOARD / ACCESS DEMO SECTION ================= -->
+                <div class="admin-section-wrap">
+                    <div class="section-title-wrap">
+                        <h3 class="section-heading">Role-Based Authorization (RBAC) Demonstration</h3>
+                        <p class="section-subheading">Protected endpoint <code>GET /api/admin</code> requires <code>admin</code> role token.</p>
+                    </div>
+
+                    <!-- Admin Access Granted Box (Visible to Admins) -->
+                    <div id="admin-panel" class="admin-card hidden">
+                        <div class="admin-card-header">
+                            <div class="admin-header-title">
+                                <span class="admin-icon">👑</span>
+                                <h4>Admin Dashboard — Access Granted</h4>
+                            </div>
+                            <span class="status-pill pill-admin">HTTP 200 OK</span>
+                        </div>
+
+                        <div class="admin-card-body">
+                            <p class="admin-intro">
+                                Verification successful: Your JWT token contains the <code>admin</code> role claim, satisfying the <code>requireAdmin</code> middleware.
+                            </p>
+
+                            <div class="telemetry-grid">
+                                <div class="telemetry-item">
+                                    <span class="telemetry-label">Registered Accounts</span>
+                                    <span id="admin-user-count" class="telemetry-value">2</span>
+                                </div>
+                                <div class="telemetry-item">
+                                    <span class="telemetry-label">Password Cipher</span>
+                                    <span class="telemetry-value">Bcrypt (10 Rounds)</span>
+                                </div>
+                                <div class="telemetry-item">
+                                    <span class="telemetry-label">Security Headers</span>
+                                    <span class="telemetry-value">Helmet Active</span>
+                                </div>
+                                <div class="telemetry-item">
+                                    <span class="telemetry-label">Login Rate Limiter</span>
+                                    <span class="telemetry-value">10 req / 15 min</span>
+                                </div>
+                            </div>
+
+                            <div class="admin-table-wrap">
+                                <h5>Registered Users in Memory (Passwords Excluded)</h5>
+                                <div class="table-responsive">
+                                    <table class="user-table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Role</th>
+                                                <th>Created At</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="admin-users-table-body">
+                                            <!-- Dynamically injected -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Standard User Restricted Box (Visible to non-admins) -->
+                    <div id="user-restricted-panel" class="restricted-card hidden">
+                        <div class="restricted-header">
+                            <div class="restricted-header-title">
+                                <span class="restricted-icon">🚫</span>
+                                <h4>Admin Restricted Zone</h4>
+                            </div>
+                            <span class="status-pill pill-warning">Role: User</span>
+                        </div>
+                        <div class="restricted-body">
+                            <p>
+                                You are currently logged in with the <strong>user</strong> role. Standard users cannot view the Administrator Dashboard.
+                            </p>
+                            <div class="restricted-action">
+                                <button id="test-admin-route-btn" type="button" class="btn btn-outline-warning">
+                                    ⚡ Test Access to GET /api/admin (Demonstrate 403 Forbidden)
+                                </button>
+                            </div>
+                            <div id="admin-test-result" class="test-result-box hidden">
+                                <div class="result-header">
+                                    <span id="test-result-badge" class="status-pill pill-danger">HTTP 403 Forbidden</span>
+                                </div>
+                                <pre id="test-result-body" class="result-json"></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= SECURITY RECOMMENDATIONS SECTION ================= -->
+                <div class="security-section-wrap">
+                    <div class="section-title-wrap">
+                        <h3 class="section-heading">Application Security Best Practices & Recommendations</h3>
+                        <p class="section-subheading">Core defensive concepts demonstrated in this project.</p>
+                    </div>
+
+                    <div id="recommendations-container" class="recommendations-grid">
+                        <!-- Populated dynamically from /api/security -->
+                    </div>
+                </div>
+
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Application Security Demonstration Project &copy; 2026 • Designed for Academic Evaluation</p>
+            <p class="footer-sub">Technologies: HTML5 • CSS3 • Vanilla JavaScript • Node.js • Express • Bcrypt • JWT • Helmet • Rate-Limit</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
